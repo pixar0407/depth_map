@@ -46,6 +46,7 @@ with torch.no_grad():
     data, target = next(iter(dl))
     data, target = data.to(device), target.to(device)
     output = model(data)
+    print(f"{len(dl)}")
     print(f"{output.shape}")
     print(f"{target.shape}")
     error_0 += model_utils.depth_loss(output, target).item()
@@ -53,6 +54,8 @@ with torch.no_grad():
     error_2 += model_utils.err_rms_log(output, target).item()
     error_3 += model_utils.err_abs_rel(output, target).item()
     error_4 += model_utils.err_sql_rel(output, target).item()
+
+    #psnr을 위해서 가공 중.
     output = (output * 0.225) + 0.45
     output = output * 255
     output[output <= 0] = 0.00001
@@ -62,11 +65,11 @@ with torch.no_grad():
     psnr = 10 * math.log10(120*160 / mse.item())
     avg_psnr += psnr
 
-    error_0 /= 8
-    error_1 /= 8
-    error_2 /= 8
-    error_3 /= 8
-    error_4 /= 8
-    avg_psnr /= 8
+    error_0 /= len(dl)
+    error_1 /= len(dl)
+    error_2 /= len(dl)
+    error_3 /= len(dl)
+    error_4 /= len(dl)
+    avg_psnr /= len(dl)
     print('test is over')
     print(f'Test set: Average loss:{error_0:.4f} / {error_1:.4f} / {error_2:.4f} /{error_3:.4f} /{error_4:.4f}  /{avg_psnr:.4f}')
