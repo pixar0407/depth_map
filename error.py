@@ -10,7 +10,7 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 #%matplotlib inline
 import torch.nn.functional as F
 import torch.nn as nn
-
+import math
 
 bs = 8
 sz = (320,240)
@@ -46,13 +46,14 @@ with torch.no_grad():
     data, target = next(iter(dl))
     data, target = data.to(device), target.to(device)
     output = model(data)
+    print(f"{output.shape}")
     error_0 += model_utils.depth_loss(output, target).item()
     error_1 += model_utils.err_rms_linear(output, target).item()
     error_2 += model_utils.err_rms_log(output, target).item()
     error_3 += model_utils.err_abs_rel(output, target).item()
     error_4 += model_utils.err_sql_rel(output, target).item()
     mse = criterion(output, target)
-    psnr = 10 * log10(1 / mse.item())
+    psnr = 10 * math.log10(1 / mse.item())
     avg_psnr += psnr
 
     error_0 /= 8
