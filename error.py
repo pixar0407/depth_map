@@ -70,8 +70,8 @@ with torch.no_grad():
     target[target == 0] = 0.00001
     print(f" 5' {target.shape}")
     output.squeeze_(dim=1) # actual_depth 를
-    print(f"{output.shape}")
-    print(f" 6' {target.shape}")
+    print(f"{output[0].shape}")
+    print(f" 6' {target[0].shape}")
     mse = criterion(output, target)
     psnr = 10 * math.log10(120*160 / mse.item())
     avg_psnr += psnr
@@ -81,6 +81,6 @@ with torch.no_grad():
     error_2 /= len(data)
     error_3 /= len(data)
     error_4 /= len(data)
-    avg_psnr /= len(data)
+    # avg_psnr /= len(data)
     print('test is over')
     print(f'Test set: Average loss:{error_0:.4f} / {error_1:.4f} / {error_2:.4f} /{error_3:.4f} /{error_4:.4f}  /{avg_psnr:.4f}')
