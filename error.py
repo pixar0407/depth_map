@@ -46,14 +46,22 @@ with torch.no_grad():
     data, target = next(iter(dl))
     data, target = data.to(device), target.to(device)
     output = model(data)
-    target2 = target
+    target2 = target # unsqueeze가 각 에러계산시 마다 반복되는 문제
     print(f"{len(data)}")
     print(f"{output.shape}")
     print(f"{target.shape}")
     error_0 += model_utils.depth_loss(output, target).item()
+    print(f" 1' {target.shape}")
+    print(f" 1 {target2.shape}")
     error_1 += model_utils.err_rms_linear(output, target).item()
+    print(f" 2' {target.shape}")
+    print(f" 2 {target2.shape}")
     error_2 += model_utils.err_rms_log(output, target).item()
+    print(f" 3' {target.shape}")
+    print(f" 3 {target2.shape}")
     error_3 += model_utils.err_abs_rel(output, target).item()
+    print(f" 4' {target.shape}")
+    print(f" 4 {target2.shape}")
     error_4 += model_utils.err_sql_rel(output, target).item()
 
     #psnr을 위해서 가공 중.
@@ -61,9 +69,12 @@ with torch.no_grad():
     output = output * 255
     output[output <= 0] = 0.00001
     target[target == 0] = 0.00001
+    print(f" 5' {target.shape}")
+    print(f" 5 {target2.shape}")
     target2.unsqueeze_(dim=1) # actual_depth 를
     print(f"{output.shape}")
-    print(f"{target2.shape}")
+    print(f" 6' {target.shape}")
+    print(f" 6 {target2.shape}")
     mse = criterion(output, target2)
     psnr = 10 * math.log10(120*160 / mse.item())
     avg_psnr += psnr
