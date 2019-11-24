@@ -41,44 +41,28 @@ error_1 = 0 # RMS linear
 error_2 = 0 # RMS log
 error_3 = 0 # abs rel
 error_4 = 0 # sqr rel
-
+avg_psnr = 0  # psnr
 with torch.no_grad():
     data, target = next(iter(dl))
     data, target = data.to(device), target.to(device)
     output = model(data)
-    print(f"{output.shape}")
-    print(f"{target.shape}")
-    print(f"!!!! {output[1][0][25][23]}")
     error_0 += model_utils.depth_loss(output, target).item()
     target.squeeze_(dim=1) # actual_depth 를
-    print(f"!!!! {output[1][0][25][23]}")
-    print(f" 1' {target.shape}")
     error_1 += model_utils.err_rms_linear(output, target).item()
     target.squeeze_(dim=1) # actual_depth 를
-    print(f"!!!! {output[1][0][25][23]}")
-    print(f" 2' {target.shape}")
     error_2 += model_utils.err_rms_log(output, target).item()
     target.squeeze_(dim=1) # actual_depth 를
-    print(f"!!!! {output[1][0][25][23]}")
-    print(f" 3' {target.shape}")
     error_3 += model_utils.err_abs_rel(output, target).item()
     target.squeeze_(dim=1) # actual_depth 를
-    print(f"!!!! {output[1][0][25][23]}")
-    print(f" 4' {target.shape}")
     error_4 += model_utils.err_sql_rel(output, target).item()
     target.squeeze_(dim=1) # actual_depth 를
-    print(f"!!!! {output[1][0][25][23]}")
 
     #psnr을 위해서 가공 중.
     output = (output * 0.225) + 0.45
     output = output * 255
     output[output <= 0] = 0.00001
     target[target == 0] = 0.00001
-    print(f" 5' {target.shape}")
-    print(f"!!!! {output[1][0][25][23]}")
     output.squeeze_(dim=1) # actual_depth 를
-    print(f"{output.shape}")
-    print(f" 6' {target.shape}")
     mse = criterion(output, target)
     psnr = 10 * math.log10(120*160 / mse.item())
     avg_psnr += psnr
