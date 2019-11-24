@@ -60,7 +60,7 @@ with torch.no_grad():
     output = output * 255
     output[output <= 0] = 0.00001
     target[target == 0] = 0.00001
-    target.unsqueeze_(dim=1) # actual_depth 를
+    output.squeeze_(dim=1) # actual_depth 를
     print(f"{output.shape}")
     print(f"{target.shape}")
     mse = criterion(output, target)
