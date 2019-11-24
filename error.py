@@ -53,6 +53,11 @@ with torch.no_grad():
     error_2 += model_utils.err_rms_log(output, target).item()
     error_3 += model_utils.err_abs_rel(output, target).item()
     error_4 += model_utils.err_sql_rel(output, target).item()
+    output = (output * 0.225) + 0.45
+    output = output * 255
+    output[output <= 0] = 0.00001
+    target[target == 0] = 0.00001
+    target.unsqueeze_(dim=1) # actual_depth 를
     mse = criterion(output, target)
     psnr = 10 * math.log10(120*160 / mse.item())
     avg_psnr += psnr
