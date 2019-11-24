@@ -1,0 +1,4 @@
+*.ckpt
+.DS_Store
+*.mat
+.ipynb_checkpoints/
