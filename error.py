@@ -47,8 +47,6 @@ with torch.no_grad():
     data, target = data.to(device), target.to(device)
     output = model(data)
     print(f"{len(data)}")
-    print(f"{output.shape}")
-    print(f"{target.shape}")
     error_0 += model_utils.depth_loss(output, target).item()
     error_1 += model_utils.err_rms_linear(output, target).item()
     error_2 += model_utils.err_rms_log(output, target).item()
@@ -61,6 +59,8 @@ with torch.no_grad():
     output[output <= 0] = 0.00001
     target[target == 0] = 0.00001
     target.unsqueeze_(dim=1) # actual_depth 를
+    print(f"{output.shape}")
+    print(f"{target.shape}")
     mse = criterion(output, target)
     psnr = 10 * math.log10(120*160 / mse.item())
     avg_psnr += psnr
