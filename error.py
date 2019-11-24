@@ -47,6 +47,7 @@ with torch.no_grad():
     data, target = data.to(device), target.to(device)
     output = model(data)
     print(f"{output.shape}")
+    print(f"{target.shape}")
     error_0 += model_utils.depth_loss(output, target).item()
     error_1 += model_utils.err_rms_linear(output, target).item()
     error_2 += model_utils.err_rms_log(output, target).item()
