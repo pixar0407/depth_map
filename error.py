@@ -53,7 +53,7 @@ with torch.no_grad():
     error_3 += model_utils.err_abs_rel(output, target).item()
     error_4 += model_utils.err_sql_rel(output, target).item()
     mse = criterion(output, target)
-    psnr = 10 * math.log10(1 / mse.item())
+    psnr = 10 * math.log10(120*160 / mse.item())
     avg_psnr += psnr
 
     error_0 /= 8
