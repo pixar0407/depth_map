@@ -72,7 +72,7 @@ with torch.no_grad():
     output.squeeze_(dim=1) # actual_depth 를
     print(f"{output[0].shape}")
     print(f" 6' {target[0].shape}")
-    mse = criterion(output, target)
+    mse = criterion(output[0], target[0])
     psnr = 10 * math.log10(120*160 / mse.item())
     avg_psnr += psnr
 
