@@ -65,10 +65,13 @@ with torch.no_grad():
     target[target == 0] = 0.00001
     output.squeeze_(dim=1) # actual_depth 를
     mse = criterion(output, target)
+    print(mse.shpae)
     psnr = 10 * math.log10(120*160 / mse.item())
+    print(psnr.shpae)
     avg_psnr += psnr
     #linear RMSs
     RMS_linear = math.sqrt(mse.item())
+    print(RMS_linear.shpae)
 
     error_0 /= len(data)
     error_1 /= len(data)
