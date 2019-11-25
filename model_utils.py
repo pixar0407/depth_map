@@ -149,6 +149,7 @@ def err_sql_rel(preds, actual_depth):
     a3 = a2/n_pixels
     a4=a3.sum()
     return a4
+
 def err_psnr(preds, actual_depth):
     # preds.shape        -> [batch_size, 1, 120, 160]
     # actual_depth.shape -> [batch_size, 120, 160]
@@ -159,12 +160,15 @@ def err_psnr(preds, actual_depth):
     preds[preds <= 0] = 0.00001
     actual_depth[actual_depth == 0] = 0.00001
     actual_depth.unsqueeze_(dim=1) # actual_depth 를  -> [batch_size, 1, 120, 160]
+
     diff = abs(preds - actual_depth)
     diff_pow = torch.pow(diff, 2)
     a = torch.sum(diff_pow, 2)
     a2 = torch.sum(a, 2)
     a3 = a2 / n_pixels
+    a3 = n_pixels/a3
     a4 = 10*torch.log10(a3)
+    print(f"홍홍홍{a4.shape}")
     return a4.sum()
 
 
