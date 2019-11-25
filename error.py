@@ -42,7 +42,6 @@ error_2 = 0 # RMS log
 error_3 = 0 # abs rel
 error_4 = 0 # sqr rel
 avg_psnr = 0  # psnr
-RMS_linear = 0
 with torch.no_grad():
     data, target = next(iter(dl))
     data, target = data.to(device), target.to(device)
@@ -76,6 +75,5 @@ with torch.no_grad():
     error_3 /= len(data)
     error_4 /= len(data)
     avg_psnr /= len(data)
-    RMS_linear /= len(data)
     print('test is over')
-    print(f'scale-Invariant Error:{error_0:.4f} \n RMS linear : {error_1:.4f} \n  RMS log : {error_2:.4f} \n abs rel : {error_3:.4f} \n sqr rel : {error_4:.4f}  \n psnr : {avg_psnr:.4f}')
+    print(f'scale-Invariant Error:{error_0:.4f} \nRMS linear : {error_1:.4f} \nRMS log : {error_2:.4f} \nabs rel : {error_3:.4f} \nsqr rel : {error_4:.4f}  \npsnr : {avg_psnr:.4f}')
