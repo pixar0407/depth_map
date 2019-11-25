@@ -153,7 +153,7 @@ def err_sql_rel(preds, actual_depth):
     a3 = a2/n_pixels
     print(f"6{a3.shape}")
     a4=a3.sum()
-    print(f"7{a3.shape}")
+    print(f"7{a4.shape}")
     return a4
 def print_training_loss_summary(loss, total_steps, current_epoch, n_epochs, n_batches, print_every=10):
     #prints loss at the start of the epoch, then every 10(print_every) steps taken by the optimizer
