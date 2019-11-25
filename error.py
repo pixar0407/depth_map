@@ -78,4 +78,4 @@ with torch.no_grad():
     avg_psnr /= len(data)
     RMS_linear /= len(data)
     print('test is over')
-    print(f'Test set: Average loss:{error_0:.4f} / {error_1:.4f} / {error_2:.4f} /{error_3:.4f} /{error_4:.4f}  /{avg_psnr:.4f}/ new linear {RMS_linear:.4f})
+    print(f'Test set: Average loss:{error_0:.4f} / {error_1:.4f} / {error_2:.4f} /{error_3:.4f} /{error_4:.4f}  /{avg_psnr:.4f}/ new linear {RMS_linear:.4f}')
