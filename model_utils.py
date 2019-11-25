@@ -139,21 +139,15 @@ def err_sql_rel(preds, actual_depth):
     preds[preds <= 0] = 0.00001
     actual_depth[actual_depth == 0] = 0.00001
     actual_depth.unsqueeze_(dim=1) # actual_depth 를  -> [batch_size, 1, 120, 160]
-
+    print(f"!!!{preds.shape}")
+    print(f"!!!{actual_depth.shape}")
     diff = abs(preds - actual_depth)
-    print(f"1{diff.shape}")
     diff_pow = torch.pow(diff, 2)
-    print(f"2{diff_pow.shape}")
     diff = diff_pow/actual_depth
-    print(f"3{diff.shape}")
     a = torch.sum(diff, 2)
-    print(f"4{a.shape}")
     a2 = torch.sum(a, 2)
-    print(f"5{a2.shape}")
     a3 = a2/n_pixels
-    print(f"6{a3.shape}")
     a4=a3.sum()
-    print(f"7{a4.shape}")
     return a4
 def print_training_loss_summary(loss, total_steps, current_epoch, n_epochs, n_batches, print_every=10):
     #prints loss at the start of the epoch, then every 10(print_every) steps taken by the optimizer
