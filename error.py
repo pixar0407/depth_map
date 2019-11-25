@@ -59,16 +59,16 @@ with torch.no_grad():
     target.squeeze_(dim=1) # actual_depth 를
 
     #psnr을 위해서 가공 중.
-    output = (output * 0.225) + 0.45
-    output = output * 255
-    output[output <= 0] = 0.00001
-    target[target == 0] = 0.00001
-    output.squeeze_(dim=1) # actual_depth 를
-    mse = criterion(output, target)
-    psnr = 10 * math.log10(120*160 / mse.item())
-    avg_psnr += psnr
-    #linear RMSs
-    RMS_linear = math.sqrt(mse.item())
+    # output = (output * 0.225) + 0.45
+    # output = output * 255
+    # output[output <= 0] = 0.00001
+    # target[target == 0] = 0.00001
+    # output.squeeze_(dim=1) # actual_depth 를
+    # mse = criterion(output, target)
+    # psnr = 10 * math.log10(120*160 / mse.item())
+    # avg_psnr += psnr
+    # #linear RMSs
+    RMS_linear += model_utils.err_psnr(output, target).item()
 
     error_0 /= len(data)
     error_1 /= len(data)

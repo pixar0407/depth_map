@@ -149,6 +149,25 @@ def err_sql_rel(preds, actual_depth):
     a3 = a2/n_pixels
     a4=a3.sum()
     return a4
+def err_psnr(preds, actual_depth):
+    # preds.shape        -> [batch_size, 1, 120, 160]
+    # actual_depth.shape -> [batch_size, 120, 160]
+    n_pixels = actual_depth.shape[1] * actual_depth.shape[2] # 120*160
+    # 아래와 같이 loss가 설정되었으므로 아래를 따라야 한다.
+    preds = (preds * 0.225) + 0.45
+    preds = preds * 255
+    preds[preds <= 0] = 0.00001
+    actual_depth[actual_depth == 0] = 0.00001
+    actual_depth.unsqueeze_(dim=1) # actual_depth 를  -> [batch_size, 1, 120, 160]
+    diff = abs(preds - actual_depth)
+    diff_pow = torch.pow(diff, 2)
+    a = torch.sum(diff_pow, 2)
+    a2 = torch.sum(a, 2)
+    a3 = a2 / n_pixels
+    a4 = 10*torch.log10(a3)
+    return a4.sum()
+
+
 def print_training_loss_summary(loss, total_steps, current_epoch, n_epochs, n_batches, print_every=10):
     #prints loss at the start of the epoch, then every 10(print_every) steps taken by the optimizer
     steps_this_epoch = (total_steps%n_batches)
