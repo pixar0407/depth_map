@@ -133,6 +133,8 @@ def err_abs_rel(preds, actual_depth):
 def err_sql_rel(preds, actual_depth):
     # preds.shape        -> [batch_size, 1, 120, 160]
     # actual_depth.shape -> [batch_size, 120, 160]
+    print(actual_depth.shape[1])
+    print(actual_depth.shape[2])
     n_pixels = actual_depth.shape[1] * actual_depth.shape[2] # 120*160
 
     # 아래와 같이 loss가 설정되었으므로 아래를 따라야 한다.
