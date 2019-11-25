@@ -81,7 +81,7 @@ def err_rms_linear(preds, actual_depth):
     diff_pow = torch.pow(diff, 2)
     a = torch.sum(diff_pow, 2)
     a2 = torch.sum(a, 2)
-    print('가로세로곱'.format(n_pixels))
+    print('가로세로곱{}'.format(n_pixels))
     a3 = a2/n_pixels
     print('a3.shape{}'.format(a3.shape))
     a4 = torch.sqrt(a3)
