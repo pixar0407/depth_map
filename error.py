@@ -68,7 +68,7 @@ with torch.no_grad():
     psnr = 10 * math.log10(120*160 / mse.item())
     avg_psnr += psnr
     #linear RMSs
-    RMS_linear = torch.sqrt(mse.item())
+    RMS_linear = math.sqrt(mse.item())
 
     error_0 /= len(data)
     error_1 /= len(data)
