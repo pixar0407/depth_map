@@ -91,19 +91,19 @@ def err_rms_linear(preds, actual_depth):
     actual_depth[actual_depth == 0] = 0.00001
     # actual_depth.unsqueeze_(dim=1) # actual_depth 를
     #
-    ans = torch.norm(actual_depth - preds) / math.sqrt(8*120*160)
+    # ans = torch.norm(actual_depth - preds) / math.sqrt(8*120*160)
 
-    # diff = abs(preds - actual_depth)
-    # print(f"00@@@@@@@@@@@@@@@@{diff.shape}")
-    # diff_pow = torch.pow(diff, 2)
-    # a = torch.sum(diff_pow, 1)
-    # print(f"1@@@@@@@@@@@@@@@@{a.shape}")
-    # a2 = torch.sum(a, 1)
-    # print(f"2@@@@@@@@@@@@@@@@{a2.shape}")
-    # a3 = a2/n_pixels
-    # a4 = torch.sqrt(a3)
-    # a5=a4.sum()
-    return ans
+    diff = abs(preds - actual_depth)
+    print(f"00@@@@@@@@@@@@@@@@{diff.shape}")
+    diff_pow = torch.pow(diff, 2)
+    a = torch.sum(diff_pow, 1)
+    print(f"1@@@@@@@@@@@@@@@@{a.shape}")
+    a2 = torch.sum(a, 1)
+    print(f"2@@@@@@@@@@@@@@@@{a2.shape}")
+    a3 = a2/n_pixels
+    a4 = torch.sqrt(a3)
+    a5=a4.sum()
+    return a5
 
 def err_rms_log(preds, actual_depth):
     # preds.shape        -> [batch_size, 1, 120, 160]
