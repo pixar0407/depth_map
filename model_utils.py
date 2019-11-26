@@ -83,21 +83,15 @@ def err_rms_linear(preds, actual_depth):
     pr_min = pr_min.view(8,1,1,1)
     preds = preds - pr_min
     pr_max = preds.view(8, -1).max(dim=1)[0]
-    print(f"a@@@@@@@@@@@@@@@@{pr_max.shape}")
     pr_max = pr_min.view(8,1,1,1)
-    print(f"b@@@@@@@@@@@@@@@@{pr_max.shape}")
     preds = (preds/pr_max)*255
     preds = preds.view(8,120,160)
-    print(f"0@@@@@@@@@@@@@@@@{preds.shape}")
     #
     preds[preds <= 0] = 0.00001
     actual_depth[actual_depth == 0] = 0.00001
     # actual_depth.unsqueeze_(dim=1) # actual_depth 를
     #
-    ans = torch.norm(actual_depth - preds) / math.sqrt(8*120*160)
-
-
-
+    ans = torch.norm(actual_depth - preds) / 8*120*160
 
     # diff = abs(preds - actual_depth)
     # print(f"00@@@@@@@@@@@@@@@@{diff.shape}")
