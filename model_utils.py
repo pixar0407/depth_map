@@ -186,7 +186,7 @@ def err_psnr(preds, actual_depth):
 
     preds[preds <= 0] = 0.00001
     actual_depth[actual_depth == 0] = 0.00001
-    actual_depth.unsqueeze_(dim=1) # actual_depth 를  -> [batch_size, 1, 120, 160]
+    # actual_depth.unsqueeze_(dim=1) # actual_depth 를  -> [batch_size, 1, 120, 160]
 
     diff = abs(preds - actual_depth)
     diff_pow = torch.pow(diff, 2)
