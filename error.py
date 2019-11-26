@@ -41,7 +41,7 @@ error_1 = 0 # RMS linear
 error_2 = 0 # RMS log
 error_3 = 0 # abs rel
 error_4 = 0 # sqr rel
-# avg_psnr = 0  # psnr
+avg_psnr = 0  # psnr
 with torch.no_grad():
     data, target = next(iter(dl))
     data, target = data.to(device), target.to(device)
