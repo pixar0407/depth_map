@@ -70,12 +70,21 @@ def err_rms_linear(preds, actual_depth):
     # actual_depth.shape -> [batch_size, 120, 160]
     n_pixels = actual_depth.shape[1] * actual_depth.shape[2] # 120*160
 
+    ac_min = actual_depth.view(8,-1).min(dim=1)[0]
+    ac_max = actual_depth.view(8,-1).max(dim=1)[0]
+    pr_min = preds.view(8,-1).min(dim=1)[0]
+    pr_max = preds.view(8,-1).max(dim=1)[0]
+    print(f"ac_min:{ac_min}\nac_max:{ac_max}\npr_min:{pr_min}\npr_max:{pr_max}")
+
     # 아래와 같이 loss가 설정되었으므로 아래를 따라야 한다.
     preds = (preds * 0.225) + 0.45
     preds = preds * 255
     preds[preds <= 0] = 0.00001
     actual_depth[actual_depth == 0] = 0.00001
     actual_depth.unsqueeze_(dim=1) # actual_depth 를
+
+
+
 
     diff = abs(preds - actual_depth)
     diff_pow = torch.pow(diff, 2)
@@ -140,8 +149,7 @@ def err_sql_rel(preds, actual_depth):
     preds[preds <= 0] = 0.00001
     actual_depth[actual_depth == 0] = 0.00001
     actual_depth.unsqueeze_(dim=1) # actual_depth 를  -> [batch_size, 1, 120, 160]
-    print(f"!!!{preds.shape}")
-    print(f"!!!{actual_depth.shape}")
+
     diff = abs(preds - actual_depth)
     diff_pow = torch.pow(diff, 2)
     diff = diff_pow/actual_depth
@@ -169,7 +177,6 @@ def err_psnr(preds, actual_depth):
     a3 = a2 / n_pixels
     a3 = n_pixels/a3
     a4 = 10*torch.log10(a3)
-    print(f"홍홍홍{a4.shape}")
     return a4.sum()
 
 
