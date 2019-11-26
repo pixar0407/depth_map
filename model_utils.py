@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image
 import torch.nn.functional as F
 #from logger import Logger
-
+import math
 def get_unnormalized_ds_item(unnormalize, item):
     un_img = unnormalize(item[0][None])
     return (un_img.squeeze(dim=0), item[1])
@@ -83,7 +83,9 @@ def err_rms_linear(preds, actual_depth):
     pr_min = pr_min.view(8,1,1,1)
     preds = preds - pr_min
     pr_max = preds.view(8, -1).max(dim=1)[0]
+    print(f"a@@@@@@@@@@@@@@@@{pr_max.shape}")
     pr_max = pr_min.view(8,1,1,1)
+    print(f"b@@@@@@@@@@@@@@@@{pr_max.shape}")
     preds = (preds/pr_max)*255
     preds = preds.view(8,120,160)
     print(f"0@@@@@@@@@@@@@@@@{preds.shape}")
@@ -92,22 +94,22 @@ def err_rms_linear(preds, actual_depth):
     actual_depth[actual_depth == 0] = 0.00001
     # actual_depth.unsqueeze_(dim=1) # actual_depth 를
     #
+    ans = torch.norm(actual_depth - preds) / math.sqrt(8*120*160)
 
 
 
 
-
-    diff = abs(preds - actual_depth)
-    print(f"00@@@@@@@@@@@@@@@@{diff.shape}")
-    diff_pow = torch.pow(diff, 2)
-    a = torch.sum(diff_pow, 1)
-    print(f"1@@@@@@@@@@@@@@@@{a.shape}")
-    a2 = torch.sum(a, 1)
-    print(f"2@@@@@@@@@@@@@@@@{a2.shape}")
-    a3 = a2/n_pixels
-    a4 = torch.sqrt(a3)
-    a5=a4.sum()
-    return a5
+    # diff = abs(preds - actual_depth)
+    # print(f"00@@@@@@@@@@@@@@@@{diff.shape}")
+    # diff_pow = torch.pow(diff, 2)
+    # a = torch.sum(diff_pow, 1)
+    # print(f"1@@@@@@@@@@@@@@@@{a.shape}")
+    # a2 = torch.sum(a, 1)
+    # print(f"2@@@@@@@@@@@@@@@@{a2.shape}")
+    # a3 = a2/n_pixels
+    # a4 = torch.sqrt(a3)
+    # a5=a4.sum()
+    return ans
 
 def err_rms_log(preds, actual_depth):
     # preds.shape        -> [batch_size, 1, 120, 160]
