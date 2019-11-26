@@ -90,8 +90,8 @@ def err_rms_linear(preds, actual_depth):
     preds = preds.view(8,120,160)
     print(f"0@@@@@@@@@@@@@@@@{preds.shape}")
     #
-    preds[preds <= 0] = 0.00001
-    actual_depth[actual_depth == 0] = 0.00001
+    # preds[preds <= 0] = 0.00001
+    # actual_depth[actual_depth == 0] = 0.00001
     # actual_depth.unsqueeze_(dim=1) # actual_depth 를
     #
     ans = torch.norm(actual_depth - preds) / math.sqrt(8*120*160)
