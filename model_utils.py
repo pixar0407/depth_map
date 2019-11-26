@@ -174,16 +174,24 @@ def err_psnr(preds, actual_depth):
     # actual_depth.shape -> [batch_size, 120, 160]
     n_pixels = actual_depth.shape[1] * actual_depth.shape[2] # 120*160
     # 아래와 같이 loss가 설정되었으므로 아래를 따라야 한다.
-    preds = (preds * 0.225) + 0.45
-    preds = preds * 255
+    # preds = (preds * 0.225) + 0.45
+    # preds = preds * 255
+    pr_min = preds.view(8, -1).min(dim=1)[0]
+    pr_min = pr_min.view(8,1,1,1)
+    preds = preds - pr_min
+    pr_max = preds.view(8, -1).max(dim=1)[0]
+    pr_max = pr_min.view(8,1,1,1)
+    preds = (preds/pr_max)*255
+    preds = preds.view(8,120,160)
+
     preds[preds <= 0] = 0.00001
     actual_depth[actual_depth == 0] = 0.00001
     actual_depth.unsqueeze_(dim=1) # actual_depth 를  -> [batch_size, 1, 120, 160]
 
     diff = abs(preds - actual_depth)
     diff_pow = torch.pow(diff, 2)
-    a = torch.sum(diff_pow, 2)
-    a2 = torch.sum(a, 2)
+    a = torch.sum(diff_pow, 1) #
+    a2 = torch.sum(a, 1) #
     a3 = a2 / n_pixels
     a3 = n_pixels/a3
     a4 = 10*torch.log10(a3)
