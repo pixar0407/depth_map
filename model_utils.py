@@ -193,7 +193,7 @@ def err_psnr(preds, actual_depth):
     a = torch.sum(diff_pow, 1) #
     a2 = torch.sum(a, 1) #
     a3 = a2 / n_pixels
-    a3 = n_pixels/a3
+    a3 = n_pixels*n_pixels/a3
     a4 = 10*torch.log10(a3)
     return a4.sum()
 
