@@ -91,7 +91,7 @@ def err_rms_linear(preds, actual_depth):
     actual_depth[actual_depth == 0] = 0.00001
     # actual_depth.unsqueeze_(dim=1) # actual_depth 를
     #
-    ans = torch.norm(actual_depth - preds) / 8*120*160
+    ans = torch.norm(actual_depth - preds) / math.sqrt(8*120*160)
 
     # diff = abs(preds - actual_depth)
     # print(f"00@@@@@@@@@@@@@@@@{diff.shape}")
