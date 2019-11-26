@@ -56,8 +56,8 @@ with torch.no_grad():
     target.squeeze_(dim=1) # actual_depth 를
     error_4 += model_utils.err_sql_rel(output, target).item()
     target.squeeze_(dim=1) # actual_depth 를
-
     avg_psnr += model_utils.err_psnr(output, target).item()
+    target.squeeze_(dim=1)  # actual_depth 를
 
     error_0 /= len(data)
     error_1 /= len(data)
